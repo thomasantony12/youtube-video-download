@@ -2,6 +2,7 @@ from pytube import YouTube
 import streamlit as st
 import os
 
+
 def Download(link):
     try:
         youtubeObject = YouTube(link)
@@ -12,33 +13,20 @@ def Download(link):
         if not os.path.exists(default_download_folder):
             os.makedirs(default_download_folder)
 
-        youtubeObject.download(output_path=default_download_folder)
-        st.write("Download is completed successfully to", default_download_folder)
+        video_path = youtubeObject.download(output_path=default_download_folder)
+        return video_path
     except:
         st.write("An error has occurred")
 
 
-def process_input(link):
-    # Process the input text here
-    st.write("Input Text:", link)
-
 st.title("YouTube video downloader")
 link = st.text_input("Enter the youtube link")
 
-if st.button("Download"):
-    process_input(link)
-    Download(link)
+if st.button("Get video file"):
+    st.write("Downloading...")
+    video_path = Download(link)
     if video_path:
-        # Provide a link to download the file through the browser
-        st.markdown(f"[Download video](./{os.path.basename(video_path)})")
-        
-        # Copy the video to the Streamlit static folder
-        if not os.path.exists('static'):
-            os.makedirs('static')
-        shutil.copy(video_path, os.path.join('static', os.path.basename(video_path)))
-        
-        st.write("You can download the video from the link above.")
+        with open(video_path, "rb") as file:
+            btn = st.download_button(label="Download video", data=file, file_name=os.path.basename(video_path), mime="video/mp4")
 
-# Serve the static files in the Streamlit static folder
-# st.static('static')
 
