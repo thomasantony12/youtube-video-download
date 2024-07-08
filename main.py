@@ -40,5 +40,5 @@ if st.button("Download"):
         st.write("You can download the video from the link above.")
 
 # Serve the static files in the Streamlit static folder
-st.static('static')
+# st.static('static')
 
