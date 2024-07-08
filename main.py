@@ -8,6 +8,10 @@ def Download(link):
         youtubeObject = youtubeObject.streams.get_highest_resolution()
         folder = os.path.expanduser("~")
         default_download_folder = os.path.join(folder, "Downloads")
+
+        if not os.path.exists(default_download_folder):
+            os.makedirs(default_download_folder)
+            
         youtubeObject.download(output_path=default_download_folder)
         st.write("Download is completed successfully to", default_download_folder)
     except:
